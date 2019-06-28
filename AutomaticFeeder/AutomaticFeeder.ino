@@ -12,14 +12,14 @@ RTC_DS3231 rtc;
 //Pantalla LCD (configuracion de pines)
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 //Configurando PAP
-Stepper mypap(PPR, 2, 3, 9, 10);
+Stepper mypap(PPR, 2, 3, 5, 6);
 
 
   // Valores por defecto de las variables
 int numeroDeComidas = 2;  //Numero de veces que el sistema concede comida al animal
 int cantidadDeComida = 5; //Vueltas del PAP, luego intentaré ver cuantos gramos da una vuelta  
-int horaComida1 = 22;
-int minutoComida1 = 30;
+int horaComida1 = 16;
+int minutoComida1 = 35;
 int horaComida2 = 7;
 int minutoComida2 = 30;
 const int boton1 = 13;
@@ -91,26 +91,26 @@ void loop() {
 if(numeroDeComidas == 1){
   if(fecha.hour() == horaComida1 && fecha.minute() == minutoComida1){
     lcd.clear();
-    lcd.setCursor(17,0);
+    lcd.setCursor(0,0);
     lcd.print("Dando de comer");
     mypap.step(cantidadDeComida*200);
-    delay(500);
+    delay(60000);
   }
   
 }else if(numeroDeComidas == 2){
   if(fecha.hour() == horaComida1 && fecha.minute() == minutoComida1){
     lcd.clear();
-    lcd.setCursor(17,0);
+    lcd.setCursor(0,0);
     lcd.print("Dando de comer");
     mypap.step(cantidadDeComida*200);
-    delay(500);
+    delay(60000);
   }
   if(fecha.hour() == horaComida2 && fecha.minute() == minutoComida2){
     lcd.clear();
-    lcd.setCursor(17,0);
+    lcd.setCursor(0,0);
     lcd.print("Dando de comer");
     mypap.step(cantidadDeComida*200);
-    delay(500);
+    delay(6000);
   }
 }
   
@@ -155,7 +155,7 @@ if(digitalRead(boton1) == HIGH){
           lcd.print(horaComida1);
           
         if(digitalRead(boton2) == HIGH){
-         if(horaComida1 <= 23){
+         if(horaComida1 < 23){
           horaComida1++;
          }else{
           horaComida1 = 00;
@@ -175,7 +175,7 @@ if(digitalRead(boton1) == HIGH){
       lcd.print("Minuto 1: ");
          lcd.print(minutoComida1);
         if(digitalRead(boton2) == HIGH){
-         if(minutoComida1 <= 59){
+         if(minutoComida1 < 59){
           minutoComida1++;
          }else{
           minutoComida1 = 00;
@@ -193,7 +193,7 @@ if(digitalRead(boton1) == HIGH){
           lcd.print(horaComida2);
           
         if(digitalRead(boton2) == HIGH){
-         if(horaComida2 <= 23){
+         if(horaComida2 < 23){
           horaComida2++;
          }else{
           horaComida2 = 00;
@@ -213,7 +213,7 @@ if(digitalRead(boton1) == HIGH){
       lcd.print("Minuto 2: ");
          lcd.print(minutoComida2);
         if(digitalRead(boton2) == HIGH){
-         if(minutoComida2 <= 59){
+         if(minutoComida2 < 59){
           minutoComida2++;
          }else{
           minutoComida2 = 00;
@@ -224,33 +224,39 @@ if(digitalRead(boton1) == HIGH){
       delay(500);
     }else {
 
-    lcd.print("Horas de comidas");
-      lcd.setCursor(17,1);
-      lcd.print("Hora 1");
-      lcd.setCursor(10,1);
+    
       while(digitalRead(boton1) != HIGH){
+        lcd.clear();
+        lcd.print("Hora de comida");
+      lcd.setCursor(0,1);
+      lcd.print("Hora: ");
          lcd.print(horaComida1);
         if(digitalRead(boton2) == HIGH){
-         if(horaComida1 <= 23){
+         if(horaComida1 < 23){
           horaComida1++;
          }else{
           horaComida1 = 00;
          }
         }
+        delay(250);
       }
       delay(500);
-      lcd.setCursor(17,1);
-      lcd.print("Minuto 1");
-      lcd.print(8,1);
+      
       while(digitalRead(boton1) != HIGH){
+        lcd.clear();
+         lcd.print("Hora de comida");
+      lcd.setCursor(0,1);
+      lcd.print("Minuto : ");
          lcd.print(minutoComida1);
         if(digitalRead(boton2) == HIGH){
-         if(minutoComida1 <= 59){
+         if(minutoComida1 < 59){
           minutoComida1++;
          }else{
           minutoComida1 = 00;
          }
-        }
+       
+       }
+       delay(250);
       }
       delay(500);
     
