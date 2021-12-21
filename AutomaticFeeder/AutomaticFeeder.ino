@@ -2,18 +2,19 @@
 #include <LiquidCrystal.h>
 #include <Servo.h>
 #include <Wire.h>
-#include <Stepper.h>
-#include "RTClib.h"
+#include <AccelStepper.h>
+#include <RTClib.h>
 
-//Pasos del pap
-const int PPR = 200;
+#define dirPin 2
+#define stepPin 3
+#define motorInterfaceType 1
+
 // RTC_DS1307 rtc;
 RTC_DS3231 rtc;
 //Pantalla LCD (configuracion de pines)
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 //Configurando PAP
-Stepper mypap(PPR, 2, 3, 5, 6);
-
+AccelStepper stepper = AccelStepper(motorInterfaceType, stepPin, dirPin);
 
   // Valores por defecto de las variables
 int numeroDeComidas = 2;  //Numero de veces que el sistema concede comida al animal
@@ -35,7 +36,8 @@ lcd.print("Iniciando...");
 delay(2000);
 pinMode(boton1, INPUT);
 pinMode(boton2, INPUT);
-mypap.setSpeed(60);
+stepper.setSpeed(60);
+stepper.setAcceleration(30);
   //Verificamos que el sistema RTC está en buenas condiciones
    if (!rtc.begin()) {
       lcd.clear();
@@ -93,7 +95,8 @@ if(numeroDeComidas == 1){
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Dando de comer");
-    mypap.step(cantidadDeComida*200);
+    stepper.moveTo(cantidadDeComida*200);
+    stepper.runToPosition();
     delay(60000);
   }
   
@@ -102,15 +105,17 @@ if(numeroDeComidas == 1){
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Dando de comer");
-    mypap.step(cantidadDeComida*200);
+    stepper.moveTo(cantidadDeComida*200);
+    stepper.runToPosition();
     delay(60000);
   }
   if(fecha.hour() == horaComida2 && fecha.minute() == minutoComida2){
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Dando de comer");
-    mypap.step(cantidadDeComida*200);
-    delay(6000);
+    stepper.moveTo(cantidadDeComida*200);
+    stepper.runToPosition();
+    delay(60000);
   }
 }
   
